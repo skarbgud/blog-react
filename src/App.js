@@ -9,6 +9,7 @@ function App() {
   let [title, setTitle] = useState(['남자 코트 추천', '강남 우동맛집', '파이썬독학']);
   let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
+  let [modalIndex, setModalIndex] = useState(0);
 
   function modalSwitch() {
     if (modal === true) {
@@ -34,13 +35,13 @@ function App() {
       {
         title.map(function(a, i) {
           return (<div className='list' key={i}>
-            <h4 onClick={() => {setModal(!modal)}}>{title[i]} <span onClick={() => {clickLike(i) }}>👍</span> {like[i]} </h4>
+            <h4 onClick={() => {setModal(!modal); setModalIndex(i)}}>{title[i]} <span onClick={() => {clickLike(i) }}>👍</span> {like[i]} </h4>
           </div>)
         })
       }
 
       {
-        modal == true ? <Modal color={'skyblue'} title={title} setTitle={setTitle}/> : null
+        modal == true ? <Modal color={'skyblue'} title={title} setTitle={setTitle} modalIndex={modalIndex}/> : null
       }
     </div>
   );
@@ -50,11 +51,10 @@ function Modal(props) {
   console.log(props);
   return (
     <div className='modal' style={{background: props.color}}>
-      <h4>{props.title[0]}</h4>
+      <h4>{props.title[props.modalIndex]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
-
-      <button onClick={() => {props.setTitle(['여자 코트 추천', '강남 우동 맛집', '파이썬 독학'])}}>글수정</button>
+      <button>글수정</button>
     </div>
   )
 }
