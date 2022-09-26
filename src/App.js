@@ -10,6 +10,7 @@ function App() {
   let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
   let [modalIndex, setModalIndex] = useState(0);
+  let [input, setInput] = useState('');
 
   function modalSwitch() {
     if (modal === true) {
@@ -26,6 +27,22 @@ function App() {
     setLike(copy);
   }
 
+  function addTitle(inputTitle) {
+    let titleCopy = [...title];
+    titleCopy.push(inputTitle);
+    setTitle(titleCopy);
+
+    let likeCopy = [...like];
+    likeCopy.push(0);
+    setLike(likeCopy);
+  }
+
+  function removeTitle(idx) {
+    let copy = [...title];
+    copy.splice(idx, 1);
+    setTitle(copy);
+  }
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -35,10 +52,17 @@ function App() {
       {
         title.map(function(a, i) {
           return (<div className='list' key={i}>
-            <h4 onClick={() => {setModal(!modal); setModalIndex(i)}}>{title[i]} <span onClick={() => {clickLike(i) }}>👍</span> {like[i]} </h4>
+            <h4 onClick={() => {setModal(!modal); setModalIndex(i)}}>{title[i]} <span onClick={() => {e.stopPropagation(); clickLike(i) }}>👍</span> {like[i]} </h4>
+            <button onClick={(e) => { e.stopPropagation(); removeTitle(i);}}>삭제</button>
           </div>)
         })
       }
+
+      <input onChange={(e) => {
+        setInput(e.target.value)
+      }}></input>
+
+      <button onClick={() => { addTitle(input)}}>글등록</button>
 
       {
         modal == true ? <Modal color={'skyblue'} title={title} setTitle={setTitle} modalIndex={modalIndex}/> : null
